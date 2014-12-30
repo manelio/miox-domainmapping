@@ -3,6 +3,7 @@ miox-domainmapping
 
 Domain mapping for Magento
 
+Map one domain to another, or to a store code. Also useful for local development without change urls in database.
 
 ```xml
 <config>
