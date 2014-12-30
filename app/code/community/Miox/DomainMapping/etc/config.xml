@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+    <modules>
+        <Miox_DomainMapping>
+            <version>0.1.0</version>
+        </Miox_DomainMapping>
+    </modules>
+    <global>
+        <models>
+            <domainmapping>
+                <class>Miox_DomainMapping_Model</class>
+            </domainmapping>
+        </models>
+
+        <events>
+            <resource_get_tablename>
+                <observers>
+                    <domainmapping_resource_get_tablename>
+                        <type>singleton</type>
+                        <class>domainmapping/observer</class>
+                        <method>resourceGetTablename</method>
+                    </domainmapping_resource_get_tablename>
+                </observers>
+            </resource_get_tablename>
+
+            <controller_front_init_before>
+                <observers>
+                    <domainmapping_controller_front_init_before>
+                        <type>singleton</type>
+                        <class>domainmapping/observer</class>
+                        <method>controllerFrontInitBefore</method>
+                    </domainmapping_controller_front_init_before>
+                </observers>
+            </controller_front_init_before>
+
+            <core_block_abstract_to_html_before>
+                <observers>
+                    <domainmapping_core_block_abstract_to_html_before>
+                        <type>singleton</type>
+                        <class>domainmapping/observer</class>
+                        <method>coreBlockAbstractToHtmlBefore</method>
+                    </domainmapping_core_block_abstract_to_html_before>
+                </observers>
+            </core_block_abstract_to_html_before>
+
+        </events>        
+    </global>
+
+</config>

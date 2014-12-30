@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Miox_DomainMapping>
+            <active>true</active>
+            <codePool>community</codePool>
+        </Miox_DomainMapping>
+    </modules>
+</config>
