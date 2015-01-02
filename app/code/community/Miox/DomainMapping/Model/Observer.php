@@ -4,10 +4,15 @@ class Miox_DomainMapping_Model_Observer
   static protected $_initialized = false;
 
   static protected $_domainMappings = array();
+  static protected $_domainMappingsInfo = array();  
+  static protected $_domainMappingInfo = array();  
+
   static protected $_urlReplacements = array();
+
   static protected $domain0 = null;
   static protected $domain1 = null;
   static protected $storeCode = null;
+
 
   public function resourceGetTablename($observer)
   {    
@@ -19,8 +24,8 @@ class Miox_DomainMapping_Model_Observer
 
     foreach($configDomainMappings->asArray() as $configDomainMapping) {
       self::$_domainMappings[$configDomainMapping['from']] = $configDomainMapping['to'];
+      self::$_domainMappingsInfo[$configDomainMapping['from']] = $configDomainMapping;
     }
-
     self::$_initialized = true;
 
     $domain0 = null;
@@ -29,6 +34,8 @@ class Miox_DomainMapping_Model_Observer
     if (!$domain0) return false;
 
     if (!array_key_exists($domain0, self::$_domainMappings)) return false;
+    self::$_domainMappingInfo = self::$_domainMappingsInfo[$domain0];    
+
     $domain1 = self::$_domainMappings[$domain0];
     self::$domain0 = $_SERVER['HTTP_HOST0'] = $domain0;
 
@@ -37,7 +44,7 @@ class Miox_DomainMapping_Model_Observer
       $domain1 = $domain0;      
     } else {
       self::$domain1 = $_SERVER['HTTP_HOST'] = $domain1;
-      self::$_urlReplacements[$domain1] = $domain0;  
+      self::$_urlReplacements[$domain1] = $domain0;
     }
     
   }
@@ -51,6 +58,22 @@ class Miox_DomainMapping_Model_Observer
       }
     }
 
+    if (array_key_exists('design', self::$_domainMappingInfo)) {
+      foreach(self::$_domainMappingInfo['design'] as $key => $value) {
+        switch($key) {
+          case 'package':
+            Mage::getDesign()->setPackageName($value);
+            break;
+          case 'theme':
+            Mage::getDesign()->setTheme($value);
+            break;
+          case 'skin':
+            Mage::getDesign()->setTheme('skin', $value);
+            break;
+        }
+      }
+    }
+    
     if (empty(self::$_urlReplacements)) return false;
 
     $store = Mage::app()->getStore();
